@@ -35,14 +35,14 @@ export default defineBlock<Props>({
     tagTitle: "Every family is different",
     tagText: "We learn your goals before we suggest a plan.",
     kicker: "Our approach",
-    heading: "We start by understanding you.",
+    heading: "We start by understanding you",
     lede: "After 13 years in family law, we have learned that no two families need the same plan. We take the time to understand your needs, then work toward the solution that suits you.",
     points: [
       { title: "We listen before we advise", text: "You set out your concerns and goals. Our advice follows from them." },
       { title: "We explain every option", text: "You hear the routes open to you, with the likely effort and cost of each." },
-      { title: "We act for you with care", text: "We have won numerous cases for our clients, and we bring the same preparation to yours." },
+      { title: "We act for you with care", text: "We have won numerous cases for clients, and we prepare yours with the same care." },
     ],
-    ctaLabel: "Talk to our team",
+    ctaLabel: "Book a consultation",
     ctaHref: "#contact",
   },
   fields: [

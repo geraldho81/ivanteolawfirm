@@ -89,7 +89,7 @@ const PATHS: Record<string, ReactNode> = {
   ),
 };
 
-export function Icon({ name, sw = 1.7 }: { name: string; sw?: number }) {
+export function Icon({ name, sw = 1.5 }: { name: string; sw?: number }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       {PATHS[name] ?? PATHS.shield}
@@ -110,12 +110,9 @@ export function Logo({ src, alt }: { src?: string; alt?: string }) {
     // eslint-disable-next-line @next/next/no-img-element
     return <img className="itl-logo-img" src={src} alt={alt ?? ""} />;
   }
-  return (
-    <svg viewBox="0 0 32 32" aria-hidden="true">
-      <rect width="32" height="32" rx="9" fill="#3098F3" />
-      <path d="M16 6c-3 4-6 6-6 10a6 6 0 0 0 12 0c0-4-3-6-6-10z" fill="#0B1F3A" />
-    </svg>
-  );
+  // One source for the Marina Bay roofline mark: src/app/icon.svg (also the favicon).
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img className="itl-logo-img" src="/icon.svg" alt="" width={32} height={32} />;
 }
 
 const LAUREL = [

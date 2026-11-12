@@ -35,8 +35,8 @@ export default defineBlock<Props>({
   defaults: {
     anchor: "contact",
     kicker: "Book a consultation",
-    heading: "Take the first step today.",
-    lede: "Tell us a little about your situation. Our professional team arranges a consultation within 30 minutes, and fees start from S$500.",
+    heading: "Take the first step today",
+    lede: "Tell us a little about your situation. Our team arranges your consultation, and fees start from S$500.",
     info: [
       { icon: "phone", label: "+65 6000 0000", href: "tel:+6560000000" },
       { icon: "mail", label: "hello@ivanteolaw.sg", href: "mailto:hello@ivanteolaw.sg" },
@@ -53,7 +53,7 @@ export default defineBlock<Props>({
     sendingLabel: "Sending...",
     genericError: "Something went wrong. Please try again.",
     successTitle: "Thank you, we have your request.",
-    successText: "Our team will contact you within 30 minutes at your preferred time.",
+    successText: "Our team will contact you at your preferred time.",
   },
   fields: [
     { kind: "text", name: "anchor", label: "Section anchor id (used by #links)" },

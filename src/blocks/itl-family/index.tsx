@@ -29,10 +29,10 @@ export default defineBlock<Props>({
     imageAlt: "A mother and her young daughter laughing together on a sofa",
     imagePosition: "62% 50%",
     kicker: "Children and family",
-    heading: "Your children stay at the centre of every plan.",
+    heading: "Your children stay at the centre of every plan",
     lede: "A divorce ends a marriage. It does not end a family. We help you build arrangements that give your children stability and keep both parents involved where that is right for them.",
     chips: [{ label: "Custody" }, { label: "Care and control" }, { label: "Access" }, { label: "Maintenance" }, { label: "Guardianship" }],
-    ctaLabel: "Plan with us",
+    ctaLabel: "Book a consultation",
     ctaHref: "#contact",
   },
   fields: [

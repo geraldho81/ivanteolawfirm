@@ -19,7 +19,7 @@ export default defineBlock<Props>({
   defaults: {
     anchor: "",
     kicker: "Client voices",
-    heading: "What clients value most.",
+    heading: "What clients value most",
     quotes: [
       { quote: "They explained every step in words I could follow. I always knew what would happen next.", cite: "Client, divorce matter" },
       { quote: "Someone called me back the same hour. That calmed me more than I expected.", cite: "Client, child arrangements matter" },

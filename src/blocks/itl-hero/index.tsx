@@ -28,7 +28,7 @@ export default defineBlock<Props>({
   schema,
   defaults: {
     headlineBefore: "Ivan Teo, the ",
-    headlineEmphasis: "best",
+    headlineEmphasis: "best lawyer",
     headlineAfter: " in Singapore",
     subline:
       "Family law and divorce advice from a team that listens first. Tell us what you need, and we will help you find the right way forward.",
@@ -43,7 +43,7 @@ export default defineBlock<Props>({
   },
   fields: [
     { kind: "text", name: "headlineBefore", label: "Headline: text before the emphasised word (keep the trailing space)" },
-    { kind: "text", name: "headlineEmphasis", label: "Headline: emphasised word (italic, light blue)" },
+    { kind: "text", name: "headlineEmphasis", label: "Headline: emphasised words (light blue accent)" },
     { kind: "text", name: "headlineAfter", label: "Headline: text after the emphasised word (keep the leading space)" },
     { kind: "textarea", name: "subline", label: "Subline", rows: 3 },
     { kind: "text", name: "primaryLabel", label: "Primary button label" },

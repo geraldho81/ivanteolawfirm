@@ -23,16 +23,16 @@ export default defineBlock<Props>({
   defaults: {
     anchor: "why",
     kicker: "Why Ivan Teo",
-    heading: "Experience you can feel from the first conversation.",
-    lede: "You are dealing with some of the hardest decisions of your life. Here is what you can expect from us.",
+    heading: "What you can expect from us",
+    lede: "You are dealing with some of the hardest decisions of your life. Here is how we help.",
     showAward: true,
     awardTitle: "Spirit of Enterprise Award 2026",
-    awardText: "The Spirit of Enterprise Awards recognise Singapore's local entrepreneurs. We are proud to receive this award for our work.",
+    awardText: "We are proud to have received this award for our work.",
     cards: [
       { icon: "clock", title: "13 years in practice", text: "We have spent our careers in family law and divorce, and the work shows in how we prepare." },
-      { icon: "trophy", title: "A record of results", text: "We have won numerous cases for clients across divorce, children and financial matters." },
+      { icon: "trophy", title: "Cases won for clients", text: "We have won numerous cases across divorce, children and financial matters." },
       { icon: "wallet", title: "Clear fees from S$500", text: "We tell you what to expect on cost early, so money does not add to the stress." },
-      { icon: "chat", title: "A reply within 30 minutes", text: "Our professional team arranges your consultation within 30 minutes, so you are not left waiting." },
+      { icon: "chat", title: "A consultation without the wait", text: "Send us the form and our team arranges your consultation, so you are not left waiting." },
     ],
   },
   fields: [
@@ -54,7 +54,7 @@ export default defineBlock<Props>({
   Render: (p) => (
     <section className="itl itl-section" id={p.anchor || undefined}>
       <div className="itl-wrap">
-        <div className="itl-head">
+        <div className="itl-head itl-head-top">
           <div className="itl-rv">
             <p className="itl-kicker">{p.kicker}</p>
             <h2>{p.heading}</h2>

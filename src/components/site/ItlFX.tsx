@@ -68,7 +68,7 @@ export function ItlFX() {
             const t = e.target as HTMLElement;
             t.classList.add("itl-in");
             io.unobserve(t);
-            timers.push(window.setTimeout(() => t.classList.add("itl-done"), 1800));
+            timers.push(window.setTimeout(() => t.classList.add("itl-done"), 1000));
           }
         }),
         { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
@@ -83,11 +83,11 @@ export function ItlFX() {
       const to = Number(el.dataset.itlCount);
       if (reduce) { el.textContent = String(to); return; }
       let t0: number | null = null;
-      const dur = 1800;
+      const dur = 1200;
       const f = (t: number) => {
         if (t0 === null) t0 = t;
         const p = Math.min((t - t0) / dur, 1);
-        el.textContent = String(Math.round(to * (1 - Math.pow(1 - p, 4))));
+        el.textContent = String(p >= 1 ? to : Math.round(to * (1 - Math.pow(1 - p, 4))));
         if (p < 1) requestAnimationFrame(f);
       };
       el.textContent = "0";

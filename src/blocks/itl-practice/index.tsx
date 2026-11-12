@@ -29,13 +29,13 @@ export default defineBlock<Props>({
   defaults: {
     anchor: "practice",
     kicker: "Practice areas",
-    heading: "Support for every part of a family matter.",
+    heading: "Support for every part of a family matter",
     lede: "Family disputes touch money, homes and children all at once. We handle each of these areas, so you deal with one team from first call to final order.",
     featureIcon: "rings",
     featureTitle: "Divorce",
     featureBody:
       "The route you take depends on how much you and your spouse agree on. We explain each option in plain words and recommend the one that fits your situation.",
-    featureLinkLabel: "Ask about divorce",
+    featureLinkLabel: "Get advice",
     featureLinkHref: "#contact",
     routes: [
       { title: "Uncontested", text: "You and your spouse agree on the terms. We prepare the papers and guide you through the court steps." },

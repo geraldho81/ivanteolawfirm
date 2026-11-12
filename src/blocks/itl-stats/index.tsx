@@ -41,7 +41,7 @@ export default defineBlock<Props>({
             <div className="itl-stat" key={i}>
               <div className="itl-n">
                 {s.prefix}
-                <span data-itl-count={s.value}>{s.value}</span>
+                <span {...(s.prefix ? {} : { "data-itl-count": s.value })}>{s.value}</span>
                 {s.unit && <small>{s.unit}</small>}
               </div>
               <p>{s.text}</p>

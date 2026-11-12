@@ -38,7 +38,7 @@ const MARKUP = `<defs>
 
 <g id="parFar">
   <g id="farC"></g>
-  <g class="refl" transform="translate(0,1520) scale(1,-1)" mask="url(#rm)" filter="url(#rip)" opacity=".34"><use href="#farC"/></g>
+  <g class="refl" transform="translate(0,1520) scale(1,-1)" mask="url(#rm)" filter="url(#rip)" opacity=".2"><use href="#farC"/></g>
 </g>
 
 <g id="parMid">
@@ -63,7 +63,7 @@ const MARKUP = `<defs>
     <rect x="-3000" y="756" width="7600" height="6" fill="#071a34"/>
     <g id="shoreLights" fill="#ffd48a"></g>
   </g>
-  <g class="refl" transform="translate(0,1520) scale(1,-1)" mask="url(#rm)" filter="url(#rip)" opacity=".4"><use href="#midC"/></g>
+  <g class="refl" transform="translate(0,1520) scale(1,-1)" mask="url(#rm)" filter="url(#rip)" opacity=".26"><use href="#midC"/></g>
 </g>`;
 
 export default function ItlSkyline() {
@@ -85,7 +85,7 @@ export default function ItlSkyline() {
     };
     ["stars", "glints", "farC", "winA", "winB", "winC", "deckTrees", "shoreLights", "superTrees", "lotus"].forEach((id) => { q(id).innerHTML = ""; });
 
-    function winGroups(parent: Element, x0: number, x1: number, y0: number, y1: number, step: number, rowH: number, chance: number, sz: number) {
+    function winGroups(parent: Element, x0: number, x1: number, y0: number, y1: number, step: number, rowH: number, chance: number, sz: number, animate = true) {
       const buckets: string[][] = [[], [], [], []];
       const steady: string[] = [];
       for (let y = y0; y < y1; y += rowH) {
@@ -93,7 +93,7 @@ export default function ItlSkyline() {
           if (rnd() > chance) continue;
           const r = rnd();
           const seg = "M" + x.toFixed(1) + " " + y.toFixed(1) + "h" + sz + "v" + (sz * 1.25).toFixed(1) + "h-" + sz + "z";
-          if (r < 0.3) steady.push(seg); else buckets[Math.floor(((r - 0.3) / 0.7) * 4) % 4].push(seg);
+          if (!animate || r < 0.3) steady.push(seg); else buckets[Math.floor(((r - 0.3) / 0.7) * 4) % 4].push(seg);
         }
       }
       const cols = ["#ffd48a", "#ffd48a", "#bfe2ff", "#ffe6b3"];
@@ -109,10 +109,10 @@ export default function ItlSkyline() {
     const st = q("stars");
     for (let i = 0; i < 70; i++) {
       const c = el("circle", { cx: (rnd() * 3200 - 800).toFixed(0), cy: (rnd() * 520 - 80).toFixed(0), r: (rnd() * 1.1 + 0.4).toFixed(1), opacity: (rnd() * 0.6 + 0.2).toFixed(2) }, st);
-      if (i % 3 === 0) { c.setAttribute("class", "tw"); c.style.setProperty("--t", (4 + rnd() * 5).toFixed(1) + "s"); c.style.setProperty("--dl", "-" + (rnd() * 8).toFixed(1) + "s"); }
+      if (i % 7 === 0) { c.setAttribute("class", "tw"); c.style.setProperty("--t", (4 + rnd() * 5).toFixed(1) + "s"); c.style.setProperty("--dl", "-" + (rnd() * 8).toFixed(1) + "s"); }
     }
     const gl = q("glints");
-    for (let i = 0; i < 46; i++) {
+    for (let i = 0; i < 16; i++) {
       const gx = rnd() * 2600 - 500, gy = 772 + rnd() * 120, gw = 14 + rnd() * 50;
       const r = el("rect", { x: gx.toFixed(0), y: gy.toFixed(0), width: gw.toFixed(0), height: "1.3", rx: ".6", class: "glint" }, gl);
       r.style.setProperty("--t", (5 + rnd() * 6).toFixed(1) + "s"); r.style.setProperty("--dl", "-" + (rnd() * 10).toFixed(1) + "s");
@@ -131,7 +131,7 @@ export default function ItlSkyline() {
       if (t === "p") el("rect", { x: x + w / 2 - 0.8, y: y - 34, width: 1.6, height: 22 }, gb);
     });
     const fw = el("g", { class: "lights" }, far);
-    cbd.forEach((b) => winGroups(fw, b[0] + 5, b[0] + b[1] - 8, 760 - b[2] + 26, 752, 8, 13, 0.42, 2.6));
+    cbd.forEach((b) => winGroups(fw, b[0] + 5, b[0] + b[1] - 8, 760 - b[2] + 26, 752, 8, 13, 0.42, 2.6, false));
     winGroups(q("winA"), 905, 1022, 362, 752, 8, 11, 0.5, 3.4);
     winGroups(q("winB"), 1030, 1122, 362, 752, 8, 11, 0.5, 3.4);
     winGroups(q("winC"), 1135, 1252, 362, 752, 8, 11, 0.5, 3.4);

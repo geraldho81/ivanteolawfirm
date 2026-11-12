@@ -23,9 +23,9 @@ export default defineBlock<Props>({
   defaults: {
     anchor: "faq",
     kicker: "Questions",
-    heading: "Answers to what people ask us first.",
-    lede: "Cannot find your question? Send us a message and our team will reply within 30 minutes.",
-    ctaLabel: "Ask our team",
+    heading: "Answers to what people ask us first",
+    lede: "Cannot find your question? Send us a message and our team will reply.",
+    ctaLabel: "Book a consultation",
     ctaHref: "#contact",
     items: [
       { q: "What is the difference between contested and uncontested divorce?", a: "In an uncontested divorce, you and your spouse agree on the key issues, so the process moves faster. A contested divorce means you disagree on matters such as children or assets, and the Family Justice Courts help resolve them." },

@@ -24,7 +24,7 @@ export default defineBlock<Props>({
   defaults: {
     anchor: "process",
     kicker: "How it works",
-    heading: "Four steps, and you know what comes next at each one.",
+    heading: "Four steps, and you know what comes next at each one",
     lede: "Legal processes feel easier when the path is clear. Here is how we work with you.",
     steps: [
       { number: "01", title: "Reach out", text: "Send the form or call us. Our team arranges your consultation within 30 minutes." },
@@ -32,9 +32,9 @@ export default defineBlock<Props>({
       { number: "03", title: "Choose your plan", text: "You decide how to proceed. We prepare the documents and handle the filings with the Family Justice Courts." },
       { number: "04", title: "Move forward", text: "We stay with you through negotiation, hearings and final orders, and keep you informed at each stage." },
     ],
-    ctaLabel: "Start with step one",
+    ctaLabel: "Book a consultation",
     ctaHref: "#contact",
-    ctaNote: "Consultation arranged within 30 minutes.",
+    ctaNote: "The form takes about a minute.",
   },
   fields: [
     { kind: "text", name: "anchor", label: "Section anchor id (used by #links)" },
@@ -59,7 +59,7 @@ export default defineBlock<Props>({
   Render: (p) => (
     <section className="itl itl-section" id={p.anchor || undefined}>
       <div className="itl-wrap">
-        <div className="itl-head">
+        <div className="itl-head itl-head-stack">
           <div className="itl-rv">
             <p className="itl-kicker">{p.kicker}</p>
             <h2>{p.heading}</h2>
