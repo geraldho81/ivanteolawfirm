@@ -25,6 +25,18 @@ import postsList from "@/blocks/posts-list";
 import spacer from "@/blocks/spacer";
 import logosStrip from "@/blocks/logos-strip";
 import contactForm from "@/blocks/contact-form";
+import itlHeader from "@/blocks/itl-header";
+import itlHero from "@/blocks/itl-hero";
+import itlStats from "@/blocks/itl-stats";
+import itlPractice from "@/blocks/itl-practice";
+import itlApproach from "@/blocks/itl-approach";
+import itlProcess from "@/blocks/itl-process";
+import itlFamily from "@/blocks/itl-family";
+import itlWhy from "@/blocks/itl-why";
+import itlQuotes from "@/blocks/itl-quotes";
+import itlFaq from "@/blocks/itl-faq";
+import itlContact from "@/blocks/itl-contact";
+import itlFooter from "@/blocks/itl-footer";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const ALL: BlockDef<any>[] = [
@@ -45,6 +57,18 @@ const ALL: BlockDef<any>[] = [
   spacer,
   logosStrip,
   contactForm,
+  itlHeader,
+  itlHero,
+  itlStats,
+  itlPractice,
+  itlApproach,
+  itlProcess,
+  itlFamily,
+  itlWhy,
+  itlQuotes,
+  itlFaq,
+  itlContact,
+  itlFooter,
 ];
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

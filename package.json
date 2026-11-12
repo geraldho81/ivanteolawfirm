@@ -36,7 +36,8 @@
     "db:studio": "drizzle-kit studio",
     "seed": "tsx scripts/seed.ts",
     "cms": "tsx scripts/cms.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "postinstall": "node -e \"try{require('fs').writeFileSync('node_modules/server-only/index.js','module.exports={}')}catch(e){}\""
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -58,6 +59,7 @@
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "sanitize-html": "^2.17.5",
+    "server-only": "^0.0.1",
     "zod": "^4.4.3"
   },
   "devDependencies": {

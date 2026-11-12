@@ -1,53 +1,22 @@
-import Link from "next/link";
-import { getMenu, getSettings } from "@/lib/queries";
-import type { MenuItem } from "@/db/schema";
-import { safeHref, linkAttrs } from "@/lib/content";
+import { getSettings } from "@/lib/queries";
 import { GoogleTagManager } from "@/components/site/GoogleTagManager";
-import { SiteHeader } from "@/components/site/SiteHeader";
-import { SiteFX } from "@/components/site/SiteFX";
+import { ItlFX } from "@/components/site/ItlFX";
 
+// Header and footer are blocks on the page (itl-header, itl-footer), so every
+// word of site chrome is editable in the CMS.
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
-  let settings = { siteName: "Slim Minima", tagline: "", logoUrl: "", footerText: "", social: [] as { label: string; href: string }[], defaultOgImage: "", gtmId: "" };
-  let header: MenuItem[] = [];
-  let footer: MenuItem[] = [];
+  let gtmId = "";
   try {
-    [settings, header, footer] = await Promise.all([getSettings(), getMenu("header"), getMenu("footer")]);
+    gtmId = (await getSettings()).gtmId;
   } catch {
-    // Database not reachable yet (e.g. before first setup) - render shell with defaults.
+    // Database not reachable yet - render the shell without tags.
   }
 
   return (
     <>
-      <GoogleTagManager gtmId={settings.gtmId} />
-      <SiteFX />
-      <SiteHeader siteName={settings.siteName} logoUrl={settings.logoUrl} items={header} />
+      <GoogleTagManager gtmId={gtmId} />
+      <ItlFX />
       <main className="site-main">{children}</main>
-      <footer className="site-footer">
-        <div className="cms-container site-footer-inner">
-          <div>
-            <p>
-              <strong>{settings.siteName}</strong>
-              {settings.tagline ? ` - ${settings.tagline}` : ""}
-            </p>
-            {settings.footerText && <p>{settings.footerText}</p>}
-          </div>
-          <nav>
-            {footer.map((item) => (
-              <Link key={item.href} href={safeHref(item.href)} {...linkAttrs({ newTab: item.newTab })}>
-                {item.label}
-              </Link>
-            ))}
-            {settings.social.map((item) => (
-              <a key={item.href} href={safeHref(item.href)} target="_blank" rel="noreferrer">
-                {item.label}
-              </a>
-            ))}
-          </nav>
-        </div>
-        <p style={{ fontSize: "0.75rem", color: "var(--cms-muted, #888)", marginTop: "1rem", textAlign: "center" }}>
-          Built on <a href="https://slimminima.xyz" target="_blank" rel="noopener noreferrer" style={{ color: "inherit" }}>Slim Minima</a>
-        </p>
-      </footer>
     </>
   );
 }

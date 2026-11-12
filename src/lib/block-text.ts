@@ -119,6 +119,71 @@ const emitters: Record<string, (p: AnyProps) => string> = {
         .join(", ")
     ),
   columns: () => "",
+  "itl-header": () => "",
+  "itl-hero": (p) =>
+    lines(
+      `# ${str(p, "headlineBefore")}${str(p, "headlineEmphasis")}${str(p, "headlineAfter")}`,
+      str(p, "subline"),
+      [link(str(p, "primaryLabel"), str(p, "primaryHref")), link(str(p, "secondaryLabel"), str(p, "secondaryHref"))].filter(Boolean).join(" | "),
+      p.showAward ? `${str(p, "awardTitle")}, ${str(p, "awardSub")}` : ""
+    ),
+  "itl-stats": (p) => arr(p, "items").map((it) => `- ${str(it, "prefix")}${it.value ?? ""} ${str(it, "unit")}: ${str(it, "text")}`).join("\n"),
+  "itl-practice": (p) =>
+    lines(
+      str(p, "kicker"),
+      `## ${str(p, "heading")}`,
+      str(p, "lede"),
+      `### ${str(p, "featureTitle")}\n\n${str(p, "featureBody")}`,
+      arr(p, "routes").map((r) => `- **${str(r, "title")}** - ${str(r, "text")}`).join("\n"),
+      arr(p, "areas").map((a) => `### ${str(a, "title")}\n\n${str(a, "body")}`).join("\n\n")
+    ),
+  "itl-approach": (p) =>
+    lines(
+      str(p, "image") && `![${str(p, "imageAlt")}](${str(p, "image")})`,
+      `## ${str(p, "heading")}`,
+      str(p, "lede"),
+      arr(p, "points").map((x, i) => `${i + 1}. **${str(x, "title")}** - ${str(x, "text")}`).join("\n"),
+      link(str(p, "ctaLabel"), str(p, "ctaHref"))
+    ),
+  "itl-process": (p) =>
+    lines(
+      `## ${str(p, "heading")}`,
+      str(p, "lede"),
+      arr(p, "steps").map((s) => `${str(s, "number")}. **${str(s, "title")}** - ${str(s, "text")}`).join("\n"),
+      link(str(p, "ctaLabel"), str(p, "ctaHref"))
+    ),
+  "itl-family": (p) =>
+    lines(
+      str(p, "image") && `![${str(p, "imageAlt")}](${str(p, "image")})`,
+      `## ${str(p, "heading")}`,
+      str(p, "lede"),
+      arr(p, "chips").map((c) => str(c, "label")).join(", "),
+      link(str(p, "ctaLabel"), str(p, "ctaHref"))
+    ),
+  "itl-why": (p) =>
+    lines(
+      `## ${str(p, "heading")}`,
+      str(p, "lede"),
+      p.showAward ? `### ${str(p, "awardTitle")}\n\n${str(p, "awardText")}` : "",
+      arr(p, "cards").map((c) => `### ${str(c, "title")}\n\n${str(c, "text")}`).join("\n\n")
+    ),
+  "itl-quotes": (p) =>
+    lines(`## ${str(p, "heading")}`, arr(p, "quotes").map((q) => `> ${str(q, "quote")}\n\n${str(q, "cite")}`).join("\n\n")),
+  "itl-faq": (p) =>
+    lines(`## ${str(p, "heading")}`, str(p, "lede"), arr(p, "items").map((it) => `### ${str(it, "q")}\n\n${str(it, "a")}`).join("\n\n")),
+  "itl-contact": (p) =>
+    lines(
+      `## ${str(p, "heading")}`,
+      str(p, "lede"),
+      arr(p, "info").map((i) => (str(i, "href") ? link(str(i, "label"), str(i, "href")) : str(i, "label"))).map((x) => `- ${x}`).join("\n")
+    ),
+  "itl-footer": (p) =>
+    lines(
+      str(p, "firmName"),
+      str(p, "about"),
+      [...arr(p, "col1Links"), ...arr(p, "col2Links")].map((l) => `- ${link(str(l, "label"), str(l, "href"))}`).join("\n"),
+      str(p, "legal")
+    ),
   "contact-form": (p) => lines(str(p, "eyebrow"), str(p, "heading") && `## ${str(p, "heading")}`, str(p, "body")),
 };
 
@@ -155,7 +220,7 @@ export function blocksToMarkdown(blocks: Block[]): string {
 export function collectFaqItems(blocks: Block[]): { q: string; a: string }[] {
   const items: { q: string; a: string }[] = [];
   for (const block of blocks) {
-    if (block.type === "faq-accordion") {
+    if (block.type === "faq-accordion" || block.type === "itl-faq") {
       for (const it of arr(block.props, "items")) {
         const q = str(it, "q");
         const a = str(it, "a");
