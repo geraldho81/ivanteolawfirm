@@ -26,6 +26,10 @@ const schema = z.object({
   imgWater: z.string(),
   imgLights: z.string(),
   imgGlow: z.string(),
+  imgBloom: z.string(),
+  imgRim: z.string(),
+  imgDark: z.string(),
+  imgBridge: z.string(),
 });
 type Props = z.infer<typeof schema>;
 
@@ -48,13 +52,35 @@ function Layer({ src, className, depth, alt = "" }: { src: string; className?: s
   );
 }
 
-/* Window-light groups: [x0, x1, y0, y1] in plate pixels (2748 x 810 layer box), each twinkles on its own clock. */
-const GROUPS: [number, number, number, number][] = [
-  [1540, 1760, 330, 540], [1540, 1760, 540, 740],
-  [1760, 1930, 330, 540], [1760, 1930, 540, 740],
-  [1930, 2100, 330, 540], [1930, 2100, 540, 740],
+/* Plate geometry: every layer lives on one 2748 x 1152 plate; boxes below are in plate pixels. */
+type Box = [number, number, number, number];
+const PW = 2748, PH = 1152;
+const pct = (v: number, t: number) => `${((v / t) * 100).toFixed(3)}%`;
+const boxStyle = (b: Box) => ({ left: pct(b[0], PW), top: pct(b[1], PH), width: pct(b[2] - b[0], PW), height: pct(b[3] - b[1], PH) });
+const TOWERS: Box = [1500, 320, 2110, 745];
+const BLOOM: Box = [1200, 200, 2560, 810];
+const RIM: Box = [1480, 340, 2100, 500];
+const BRIDGE: Box = [500, 690, 1260, 790];
+/* Window cells: 3 towers x 4 rows. Each flickers on its own clock; "off" cells dim a cluster of windows. */
+const COLS = [1500, 1710, 1900, 2110];
+const ROWS = [320, 427, 533, 639, 745];
+const CELLS: { clip: string; i: number }[] = [];
+for (let r = 0; r < 4; r++) for (let c = 0; c < 3; c++) {
+  const x0 = (COLS[c] - TOWERS[0]) / (TOWERS[2] - TOWERS[0]), x1 = (COLS[c + 1] - TOWERS[0]) / (TOWERS[2] - TOWERS[0]);
+  const y0 = (ROWS[r] - TOWERS[1]) / (TOWERS[3] - TOWERS[1]), y1 = (ROWS[r + 1] - TOWERS[1]) / (TOWERS[3] - TOWERS[1]);
+  CELLS.push({ clip: `inset(${(y0 * 100).toFixed(1)}% ${(100 - x1 * 100).toFixed(1)}% ${(100 - y1 * 100).toFixed(1)}% ${(x0 * 100).toFixed(1)}%)`, i: r * 3 + c });
+}
+/* Search-light beams: base on the SkyPark [x, y, from deg, to deg, seconds] */
+const BEAMS: [number, number, number, number, number][] = [
+  [1560, 380, -2, 17, 12], [1650, 372, 3, 27, 10], [1860, 405, 8, 33, 13], [2050, 425, 12, 40, 11],
 ];
+/* Sparkle points on bright details (first 12 are the ones kept on mobile). */
+const SPARKS: [number, number][] = [[1512, 383], [1652, 376], [2068, 455], [1511, 576], [1757, 682], [1790, 436], [1988, 442], [2038, 759], [1679, 716], [1523, 681], [1728, 712], [1991, 770], [1654, 777], [1585, 692], [1519, 746], [1897, 779], [1814, 751], [1749, 772], [1654, 422], [1870, 715], [1625, 501], [2097, 728], [1790, 708], [2113, 774], [1561, 397], [1974, 693], [1623, 645], [1697, 538], [2024, 710], [1874, 444]];
 const RIPPLE = [0, 0.06, 0.13, 0.21, 0.3, 0.4, 0.51, 0.62, 0.72, 0.82, 0.91, 1];
+const rnd = (n: number) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+const GLINTS = Array.from({ length: 16 }, (_, i) => ({
+  x: 1560 + rnd(i + 1) * 760, y: 830 + Math.pow(rnd(i + 40), 1.3) * 250, w: 14 + rnd(i + 80) * 36,
+}));
 
 export default defineBlock<Props>({
   type: "itl-hero",
@@ -84,8 +110,12 @@ export default defineBlock<Props>({
     imgCloud4: art("v1794535643", "mbs-c4"),
     imgSkyline: art("v1794535636", "mbs-fg"),
     imgWater: art("v1794535649", "mbs-water"),
-    imgLights: art("v1794535645", "mbs-lights"),
+    imgLights: art("v1794536270", "mbs-lights-box"),
     imgGlow: art("v1794535647", "mbs-glow"),
+    imgBloom: art("v1794536273", "mbs-bloom"),
+    imgRim: art("v1794536274", "mbs-rim"),
+    imgDark: art("v1794536272", "mbs-dark"),
+    imgBridge: art("v1794536275", "mbs-bridge"),
   },
   fields: [
     { kind: "text", name: "headlineBefore", label: "Headline: text before the emphasised word (keep the trailing space)" },
@@ -108,8 +138,12 @@ export default defineBlock<Props>({
     { kind: "image", name: "imgCloud4", label: "Layer: cloud wisps, left" },
     { kind: "image", name: "imgSkyline", label: "Layer: skyline cut-out with transparent sky" },
     { kind: "image", name: "imgWater", label: "Layer: water band with reflections" },
-    { kind: "image", name: "imgLights", label: "Layer: window light glow (transparent)" },
+    { kind: "image", name: "imgLights", label: "Layer: window light glow, tower box crop (transparent)" },
     { kind: "image", name: "imgGlow", label: "Layer: SkyPark glow (transparent)" },
+    { kind: "image", name: "imgBloom", label: "Layer: building bloom (soft glow, transparent)" },
+    { kind: "image", name: "imgRim", label: "Layer: SkyPark rim light (transparent)" },
+    { kind: "image", name: "imgDark", label: "Layer: window-off overlay, tower box crop (transparent)" },
+    { kind: "image", name: "imgBridge", label: "Layer: bridge light pulse (transparent)" },
   ],
   Render: (p) => (
     <section className="itl itl-hero" data-itl-hero id="top">
@@ -118,12 +152,22 @@ export default defineBlock<Props>({
           <div className="itl-kb">
             <div className="itl-ly itl-ly-sky" style={{ ["--d" as string]: 0.15 }}><Layer src={p.imgSky} depth={0.15} alt={p.artAlt} /></div>
             <div className="itl-ly itl-ly-sky" style={{ ["--d" as string]: 0.25 }}><div className="itl-cl itl-cl1"><Layer src={p.imgCloud1} depth={0.25} /></div></div>
+            <div className="itl-ly itl-ly-sky" style={{ ["--d" as string]: 0.3 }}><div className="itl-cl itl-cl4"><Layer src={p.imgCloud4} depth={0.3} /></div></div>
+            <div className="itl-ly itl-ly-full" style={{ ["--d" as string]: 0.4 }}>
+              {BEAMS.map((b, i) => (
+                <div key={i} className="itl-bm" style={{ left: pct(b[0], PW), top: pct(b[1], PH) }}>
+                  <i style={{ ["--r0" as string]: `${b[2]}deg`, ["--r1" as string]: `${b[3]}deg`, ["--t" as string]: `${b[4]}s`, ["--dl" as string]: `${-i * 3.1}s` }} />
+                </div>
+              ))}
+            </div>
             <div className="itl-ly itl-ly-sky" style={{ ["--d" as string]: 0.35 }}><div className="itl-cl itl-cl2"><Layer src={p.imgCloud2} depth={0.35} /></div></div>
             <div className="itl-ly itl-ly-sky" style={{ ["--d" as string]: 0.45 }}><div className="itl-cl itl-cl3"><Layer src={p.imgCloud3} depth={0.45} /></div></div>
-            <div className="itl-ly itl-ly-sky" style={{ ["--d" as string]: 0.3 }}><div className="itl-cl itl-cl4"><Layer src={p.imgCloud4} depth={0.3} /></div></div>
             <div className="itl-ly itl-ly-sky" style={{ ["--d" as string]: 0.15 }}>
               <i className="itl-dusk" />
               <i className="itl-night" />
+            </div>
+            <div className="itl-ly itl-ly-full" style={{ ["--d" as string]: 0.6 }}>
+              <div className="itl-bloom itl-bloom-back" style={boxStyle(BLOOM)}><Layer src={p.imgBloom} depth={0.6} /></div>
             </div>
             <div className="itl-ly itl-ly-water" style={{ ["--d" as string]: 0.9 }}>
               {RIPPLE.slice(0, -1).map((f0, i) => {
@@ -131,7 +175,7 @@ export default defineBlock<Props>({
                 const hh = f1 - f0;
                 return (
                   <div key={i} className="itl-rs" style={{ top: `${f0 * 100}%`, height: `${hh * 100}%` }}>
-                    <div className="itl-rp" style={{ ["--a" as string]: `${(1 + i * 0.55).toFixed(2)}px`, ["--t" as string]: `${(6.5 + (i % 4) * 1.3).toFixed(1)}s`, ["--dl" as string]: `${(-i * 1.7).toFixed(1)}s` }}>
+                    <div className="itl-rp" style={{ ["--a" as string]: `${(1.8 + i * 0.85).toFixed(2)}px`, ["--t" as string]: `${(5.2 + (i % 4) * 1.1).toFixed(1)}s`, ["--dl" as string]: `${(-i * 1.7).toFixed(1)}s` }}>
                       {p.imgWater && (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img src={sized(p.imgWater, 1400)} srcSet={`${sized(p.imgWater, 1400)} 1400w, ${sized(p.imgWater, 2748)} 2748w`} sizes="(max-width: 600px) 1400px, 2400px" alt="" decoding="async" draggable={false} style={{ top: `${-(f0 / hh) * 100}%`, height: `${(1 / hh) * 100}%` }} />
@@ -141,14 +185,44 @@ export default defineBlock<Props>({
                 );
               })}
             </div>
-            <div className="itl-ly itl-ly-sky" style={{ ["--d" as string]: 0.7 }}><Layer src={p.imgSkyline} depth={0.7} /></div>
-            <div className="itl-ly itl-ly-sky" style={{ ["--d" as string]: 0.7 }}>
-              {GROUPS.map((g, i) => (
-                <div key={i} className="itl-lt" style={{ clipPath: `inset(${(g[2] / 810) * 100}% ${100 - (g[1] / 2748) * 100}% ${100 - (g[3] / 810) * 100}% ${(g[0] / 2748) * 100}%)`, ["--t" as string]: `${(4.6 + i * 0.9).toFixed(1)}s`, ["--dl" as string]: `${(-i * 1.9).toFixed(1)}s` }}>
-                  <Layer src={p.imgLights} depth={0.7} />
-                </div>
+            <div className="itl-ly itl-ly-full" style={{ ["--d" as string]: 0.9 }}>
+              {GLINTS.map((g, i) => (
+                <i key={i} className="itl-gn" style={{ left: pct(g.x, PW), top: pct(g.y, PH), width: pct(g.w, PW), ["--t" as string]: `${(1.6 + rnd(i + 7) * 2.4).toFixed(2)}s`, ["--dl" as string]: `${(-rnd(i + 21) * 4).toFixed(2)}s` }} />
               ))}
-              <div className="itl-gl"><Layer src={p.imgGlow} depth={0.7} /></div>
+            </div>
+            <div className="itl-ly itl-ly-sky" style={{ ["--d" as string]: 0.7 }}><Layer src={p.imgSkyline} depth={0.7} /></div>
+            <div className="itl-ly itl-ly-full" style={{ ["--d" as string]: 0.7 }}>
+              <div className="itl-box" style={boxStyle(TOWERS)}>
+                {CELLS.map((c) => (
+                  <div key={"d" + c.i} className="itl-wd" style={{ clipPath: c.clip, ["--t" as string]: `${(5 + rnd(c.i + 3) * 5).toFixed(1)}s`, ["--dl" as string]: `${(-rnd(c.i + 11) * 9).toFixed(1)}s` }}>
+                    <Layer src={p.imgDark} depth={0.7} />
+                  </div>
+                ))}
+                {CELLS.map((c) => (
+                  <div key={"l" + c.i} className="itl-wl" style={{ clipPath: c.clip, ["--t" as string]: `${(2.6 + rnd(c.i + 5) * 3).toFixed(1)}s`, ["--dl" as string]: `${(-rnd(c.i + 17) * 6).toFixed(1)}s` }}>
+                    <Layer src={p.imgLights} depth={0.7} />
+                  </div>
+                ))}
+              </div>
+              <div className="itl-rim" style={boxStyle(RIM)}><Layer src={p.imgRim} depth={0.7} /></div>
+              <div className="itl-bloom itl-bloom-over" style={boxStyle(BLOOM)}><Layer src={p.imgBloom} depth={0.7} /></div>
+              {[0, 1, 2, 3].map((i) => {
+                const x0 = i * 25;
+                return (
+                  <div key={i} className="itl-br" style={{ ...boxStyle(BRIDGE), clipPath: `inset(0 ${100 - x0 - 25}% 0 ${x0}%)`, ["--dl" as string]: `${-i * 0.9}s` }}>
+                    <Layer src={p.imgBridge} depth={0.7} />
+                  </div>
+                );
+              })}
+            </div>
+            <div className="itl-ly itl-ly-sky itl-sweep" style={{ ["--d" as string]: 0.7, maskImage: `url(${sized(p.imgSkyline, 1400)})`, WebkitMaskImage: `url(${sized(p.imgSkyline, 1400)})` }}>
+              <i className="itl-sw" />
+            </div>
+            <div className="itl-ly itl-ly-sky" style={{ ["--d" as string]: 0.7 }}><div className="itl-gl"><Layer src={p.imgGlow} depth={0.7} /></div></div>
+            <div className="itl-ly itl-ly-full" style={{ ["--d" as string]: 0.7 }}>
+              {SPARKS.map((q, i) => (
+                <i key={i} className="itl-sp" style={{ left: pct(q[0], PW), top: pct(q[1], PH), ["--s" as string]: (0.026 + rnd(i + 3) * 0.028).toFixed(4), ["--t" as string]: `${(2.4 + rnd(i + 9) * 2.6).toFixed(2)}s`, ["--dl" as string]: `${(-rnd(i + 31) * 5).toFixed(2)}s` }} />
+              ))}
             </div>
           </div>
         </div>

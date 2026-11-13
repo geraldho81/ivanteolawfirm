@@ -91,30 +91,58 @@
 .itl-ly > img, .itl-cl, .itl-cl > img, .itl-lt, .itl-lt > img, .itl-gl, .itl-gl > img, .itl-dusk, .itl-night { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; }
 .itl-ly > img { user-select: none; }
 .itl-ly-water { top: 66.84%; height: 33.16%; }
+.itl-ly-full { top: 0; height: 100%; }
 .itl-rs { position: absolute; left: 0; width: 100%; overflow: hidden; }
 .itl-rp { position: absolute; top: 0; bottom: 0; left: -1.2%; width: 102.4%; animation: itl-rip var(--t, 7s) ease-in-out infinite alternate; animation-delay: var(--dl, 0s); will-change: transform; }
 .itl-rp > img { position: absolute; left: 0; width: 100%; display: block; }
 .itl-cl { will-change: transform; }
-.itl-cl1 { animation: itl-drift1 130s ease-in-out infinite alternate; }
-.itl-cl2 { animation: itl-drift2 80s ease-in-out infinite alternate; }
-.itl-cl3 { animation: itl-drift1 150s ease-in-out infinite alternate-reverse; }
-.itl-cl4 { animation: itl-drift2 95s ease-in-out infinite alternate-reverse; }
+.itl-cl1 { animation: itl-drift1 62s ease-in-out infinite alternate; }
+.itl-cl2 { animation: itl-drift2 34s ease-in-out infinite alternate; }
+.itl-cl3 { animation: itl-drift1 48s ease-in-out infinite alternate-reverse; }
+.itl-cl4 { animation: itl-drift2 40s ease-in-out infinite alternate-reverse; }
 .itl-dusk { background: radial-gradient(ellipse 55% 60% at 65% 100%, rgba(48, 152, 243, 0.42), rgba(29, 79, 138, 0.2) 45%, rgba(29, 79, 138, 0) 75%); animation: itl-duskfade 52s ease-in-out infinite alternate; }
 .itl-night { background: linear-gradient(180deg, #050f20 0%, rgba(11, 31, 58, 0.9) 70%, rgba(11, 31, 58, 0.5) 100%); animation: itl-nightfall 52s ease-in-out infinite alternate; }
-.itl-lt { animation: itl-tw var(--t, 6s) ease-in-out infinite; animation-delay: var(--dl, 0s); }
 .itl-gl { animation: itl-glow 7s ease-in-out infinite; }
 @keyframes itl-push { from { transform: scale(1.09); } to { transform: scale(1.03); } }
 @keyframes itl-rip { from { transform: translate3d(calc(var(--a, 2px) * -1), 0, 0); } to { transform: translate3d(var(--a, 2px), 0, 0); } }
-@keyframes itl-drift1 { from { transform: translate3d(-3.5%, 0, 0); } to { transform: translate3d(3.5%, 0, 0); } }
-@keyframes itl-drift2 { from { transform: translate3d(4.5%, 0, 0); } to { transform: translate3d(-4.5%, 0, 0); } }
+@keyframes itl-drift1 { from { transform: translate3d(-4.5%, 0, 0); } to { transform: translate3d(4.5%, 0, 0); } }
+@keyframes itl-drift2 { from { transform: translate3d(6%, 0, 0); } to { transform: translate3d(-6%, 0, 0); } }
 @keyframes itl-nightfall { from { opacity: 0; } to { opacity: 0.42; } }
 @keyframes itl-duskfade { from { opacity: 1; } to { opacity: 0.25; } }
 @keyframes itl-tw { 0%, 100% { opacity: 0.05; } 50% { opacity: 1; } }
-@keyframes itl-glow { 0%, 100% { opacity: 0.08; } 50% { opacity: 0.5; } }
+@keyframes itl-glint { 0%, 100% { opacity: 0; transform: scaleX(0.3); } 45% { opacity: 1; transform: scaleX(1); } 70% { opacity: 0; transform: scaleX(0.5); } }
+@keyframes itl-glow { 0%, 100% { opacity: 0.15; } 50% { opacity: 0.7; } }
+.itl-box, .itl-bloom, .itl-rim, .itl-br { position: absolute; }
+.itl-box > div, .itl-box img, .itl-bloom > img, .itl-rim > img, .itl-br > img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; }
+.itl-bloom-back { animation: itl-bloomb 6.2s ease-in-out infinite; }
+.itl-bloom-over { animation: itl-bloomo 6.2s ease-in-out infinite; animation-delay: -1.1s; }
+.itl-rim { animation: itl-rim 5.4s ease-in-out infinite; }
+.itl-wl { animation: itl-wl var(--t, 4s) ease-in-out infinite; animation-delay: var(--dl, 0s); }
+.itl-wd { animation: itl-wd var(--t, 7s) steps(1, end) infinite; animation-delay: var(--dl, 0s); }
+.itl-br { opacity: 0; animation: itl-brp 4.8s ease-in-out infinite; animation-delay: var(--dl, 0s); }
+.itl-sweep { -webkit-mask-size: 100% 100%; mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; }
+.itl-sw { position: absolute; top: -10%; height: 120%; left: 50%; width: 11%; background: linear-gradient(90deg, rgba(255, 240, 215, 0) 0%, rgba(255, 238, 210, 0.7) 50%, rgba(255, 240, 215, 0) 100%); transform: translate3d(-30%, 0, 0) skewX(-22deg); opacity: 0; animation: itl-sweep 9s ease-in-out infinite; animation-delay: -6.5s; will-change: transform, opacity; }
+.itl-bm { position: absolute; width: 0; height: 0; }
+.itl-bm > i { position: absolute; bottom: 0; left: calc(var(--h) * -0.05); width: calc(var(--h) * 0.1); height: calc(var(--h) * 0.95); transform-origin: 50% 100%; background: linear-gradient(90deg, rgba(160, 205, 255, 0) 0%, rgba(175, 215, 255, 0.95) 50%, rgba(160, 205, 255, 0) 100%); clip-path: polygon(46% 100%, 54% 100%, 100% 0, 0 0); -webkit-mask-image: linear-gradient(to top, #000 0%, rgba(0, 0, 0, 0) 94%); mask-image: linear-gradient(to top, #000 0%, rgba(0, 0, 0, 0) 94%); opacity: 0.2; animation: itl-beam var(--t, 11s) ease-in-out infinite alternate; animation-delay: var(--dl, 0s); will-change: transform; }
+.itl-gn { position: absolute; height: 2px; border-radius: 2px; background: linear-gradient(90deg, rgba(255, 236, 190, 0), rgba(255, 244, 214, 0.95), rgba(255, 236, 190, 0)); opacity: 0; transform-origin: center; animation: itl-glint var(--t, 2.4s) ease-in-out infinite; animation-delay: var(--dl, 0s); }
+.itl-sp { --w: calc(var(--h) * var(--s, 0.02)); position: absolute; width: var(--w); height: var(--w); margin: calc(var(--w) * -0.5) 0 0 calc(var(--w) * -0.5); opacity: 0; transform: scale(0); background: radial-gradient(circle, #fff 0 9%, rgba(255, 238, 205, 0.55) 16%, rgba(255, 238, 205, 0) 42%); animation: itl-spark var(--t, 3.4s) ease-in-out infinite; animation-delay: var(--dl, 0s); pointer-events: none; }
+.itl-sp::before, .itl-sp::after { content: ""; position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: linear-gradient(90deg, rgba(255, 255, 255, 0) 8%, #fff 50%, rgba(255, 255, 255, 0) 92%) center / 100% 7% no-repeat; }
+.itl-sp::after { transform: rotate(90deg); }
+@keyframes itl-bloomb { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.7; } }
+@keyframes itl-bloomo { 0%, 100% { opacity: 0.08; } 50% { opacity: 0.32; } }
+@keyframes itl-rim { 0%, 100% { opacity: 0.15; } 50% { opacity: 0.95; } }
+@keyframes itl-wl { 0%, 100% { opacity: 0.1; } 50% { opacity: 1; } }
+@keyframes itl-wd { 0% { opacity: 0; } 52% { opacity: 0; } 54% { opacity: 0.85; } 66% { opacity: 0.85; } 68% { opacity: 0; } 80% { opacity: 0; } 82% { opacity: 0.7; } 88% { opacity: 0.7; } 90%, 100% { opacity: 0; } }
+@keyframes itl-brp { 0%, 100% { opacity: 0; } 40% { opacity: 0.9; } 70% { opacity: 0.1; } }
+@keyframes itl-sweep { 0% { opacity: 0; transform: translate3d(-30%, 0, 0) skewX(-22deg); } 8% { opacity: 1; } 34% { opacity: 1; } 42%, 100% { opacity: 0; transform: translate3d(330%, 0, 0) skewX(-22deg); } }
+@keyframes itl-beam { from { transform: rotate(var(--r0, 0deg)); } to { transform: rotate(var(--r1, 20deg)); } }
+@keyframes itl-spark { 0%, 52%, 100% { opacity: 0; transform: scale(0) rotate(0deg); } 66% { opacity: 1; transform: scale(1) rotate(24deg); } 82% { opacity: 0; transform: scale(0.15) rotate(52deg); } }
 @media (prefers-reduced-motion: reduce) {
   .itl-hero-bg *, .itl-hero-bg *::before { animation: none !important; transition: none !important; }
   .itl-kb { transform: scale(1.03); }
-  .itl-night, .itl-dusk, .itl-lt { opacity: 0 !important; }
+  .itl-night, .itl-dusk, .itl-wd, .itl-wl, .itl-sp, .itl-bm, .itl-sw, .itl-gn, .itl-br { opacity: 0 !important; }
+  .itl-bloom-back { opacity: 0.4; }
+  .itl-rim { opacity: 0.5; }
   .itl-gl { opacity: 0.5 !important; }
 }
 .itl-hero::before { content: ""; position: absolute; inset: 0; z-index: -2; background: linear-gradient(90deg, rgba(7, 20, 40, 0.92) 0%, rgba(7, 20, 40, 0.74) 38%, rgba(7, 20, 40, 0) 72%); }
@@ -132,6 +160,8 @@
   .itl-hero-in { padding-top: 104px; padding-bottom: 372px; }
   .itl .itl-assure { display: none; }
   .itl-stage { --mx: 0.5; --h: 540px; bottom: -36px; }
+  .itl-sp:nth-child(n+13), .itl-gn:nth-child(n+9) { display: none; }
+  .itl-bm > i { opacity: 0.14; }
   .itl-cta { gap: 8px; }
   .itl-cta .itl-btn-primary { width: 100%; justify-content: center; }
   .itl-cta .itl-btn-ghost { background: none; min-height: 44px; padding: 8px 0; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: rgba(255, 255, 255, 0.4); }
