@@ -38,6 +38,35 @@ export function ItlFX() {
     on(window, "scroll", onScroll, { passive: true });
     onScroll();
 
+    /* Hero layer parallax: pointer drift + scroll, written as CSS vars the layers read */
+    const stage = d.querySelector<HTMLElement>("[data-itl-stage]");
+    if (stage && !reduce) {
+      let tx = 0, ty = 0, cx = 0, cy = 0, raf = 0;
+      const fine = matchMedia("(hover: hover) and (pointer: fine)").matches;
+      const tick = () => {
+        cx += (tx - cx) * 0.06;
+        cy += (ty - cy) * 0.06;
+        stage.style.setProperty("--px", cx.toFixed(2));
+        stage.style.setProperty("--py", cy.toFixed(2));
+        raf = Math.abs(tx - cx) + Math.abs(ty - cy) > 0.02 ? requestAnimationFrame(tick) : 0;
+      };
+      const kick = () => { if (!raf) raf = requestAnimationFrame(tick); };
+      if (fine) {
+        on(window, "pointermove", ((e: PointerEvent) => {
+          tx = (e.clientX / innerWidth - 0.5) * -26;
+          ty = (e.clientY / innerHeight - 0.5) * -12;
+          kick();
+        }) as EventListener, { passive: true });
+      }
+      const sc = () => {
+        if (scrollY > innerHeight * 1.2) return;
+        stage.style.setProperty("--sy", (scrollY * 0.07).toFixed(1));
+      };
+      on(window, "scroll", sc, { passive: true });
+      sc();
+      cleanups.push(() => cancelAnimationFrame(raf));
+    }
+
     /* Mobile drawer */
     const drawer = d.querySelector<HTMLElement>("[data-itl-drawer]");
     const burger = d.querySelector<HTMLElement>("[data-itl-open]");

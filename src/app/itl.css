@@ -83,19 +83,40 @@
 .itl-hero { position: relative; min-height: 560px; padding: 0; color: var(--itl-on-navy); background: var(--itl-navy); display: flex; align-items: center; overflow: hidden; isolation: isolate; }
 .site-main .itl-hero { min-height: 100vh; min-height: 100dvh; }
 .itl-hero-bg { position: absolute; inset: 0; z-index: -3; overflow: hidden; }
-.itl-skyline { position: absolute; inset: 0; width: 100%; height: 100%; display: block; overflow: visible; }
-.itl-skyline .night { animation: itl-nightfall 48s ease-in-out infinite alternate; }
-.itl-skyline .lights { animation: itl-lightson 48s ease-in-out infinite alternate; }
-.itl-skyline .tw { animation: itl-tw var(--t, 6s) ease-in-out infinite; animation-delay: var(--dl, 0s); }
-.itl-skyline .cloud { animation: itl-drift var(--t, 150s) ease-in-out infinite alternate; animation-delay: var(--dl, 0s); }
-.itl-skyline .glint { animation: itl-glint var(--t, 7s) ease-in-out infinite; animation-delay: var(--dl, 0s); }
-.itl-skyline .pool { animation: itl-tw 9s ease-in-out infinite; }
-@keyframes itl-nightfall { from { opacity: 0.18; } to { opacity: 1; } }
-@keyframes itl-lightson { from { opacity: 0.22; } to { opacity: 1; } }
-@keyframes itl-tw { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
-@keyframes itl-drift { from { transform: translateX(-260px); } to { transform: translateX(260px); } }
-@keyframes itl-glint { 0%, 100% { opacity: 0; } 50% { opacity: 0.35; } }
-.itl-hero.itl-reduced .itl-skyline * { animation: none !important; }
+/* Painted hero: layered stage, all layers share one 2748 x 1152 plate geometry. Motion = transform/opacity only. */
+.itl-hero-bg { container-type: size; }
+.itl-stage { --r: 2.3854; --m: 0.651; --mx: 0.72; --h: max(100cqh, calc(var(--mx) * 100cqw / (var(--m) * var(--r)))); position: absolute; bottom: 0; height: var(--h); width: calc(var(--h) * var(--r)); left: calc(var(--mx) * 100cqw - var(--m) * var(--h) * var(--r)); }
+.itl-kb { position: absolute; inset: 0; transform-origin: 65% 62%; animation: itl-push 22s cubic-bezier(0.2, 0.6, 0.2, 1) both; will-change: transform; }
+.itl-ly { position: absolute; left: 0; width: 100%; top: 0; height: 70.31%; transform: translate3d(calc(var(--px, 0) * var(--d, 0) * 1px), calc((var(--py, 0) + var(--sy, 0)) * var(--d, 0) * 1px), 0); will-change: transform; }
+.itl-ly > img, .itl-cl, .itl-cl > img, .itl-lt, .itl-lt > img, .itl-gl, .itl-gl > img, .itl-dusk, .itl-night { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; }
+.itl-ly > img { user-select: none; }
+.itl-ly-water { top: 66.84%; height: 33.16%; }
+.itl-rs { position: absolute; left: 0; width: 100%; overflow: hidden; }
+.itl-rp { position: absolute; top: 0; bottom: 0; left: -1.2%; width: 102.4%; animation: itl-rip var(--t, 7s) ease-in-out infinite alternate; animation-delay: var(--dl, 0s); will-change: transform; }
+.itl-rp > img { position: absolute; left: 0; width: 100%; display: block; }
+.itl-cl { will-change: transform; }
+.itl-cl1 { animation: itl-drift1 130s ease-in-out infinite alternate; }
+.itl-cl2 { animation: itl-drift2 80s ease-in-out infinite alternate; }
+.itl-cl3 { animation: itl-drift1 150s ease-in-out infinite alternate-reverse; }
+.itl-cl4 { animation: itl-drift2 95s ease-in-out infinite alternate-reverse; }
+.itl-dusk { background: radial-gradient(ellipse 55% 60% at 65% 100%, rgba(48, 152, 243, 0.42), rgba(29, 79, 138, 0.2) 45%, rgba(29, 79, 138, 0) 75%); animation: itl-duskfade 52s ease-in-out infinite alternate; }
+.itl-night { background: linear-gradient(180deg, #050f20 0%, rgba(11, 31, 58, 0.9) 70%, rgba(11, 31, 58, 0.5) 100%); animation: itl-nightfall 52s ease-in-out infinite alternate; }
+.itl-lt { animation: itl-tw var(--t, 6s) ease-in-out infinite; animation-delay: var(--dl, 0s); }
+.itl-gl { animation: itl-glow 7s ease-in-out infinite; }
+@keyframes itl-push { from { transform: scale(1.09); } to { transform: scale(1.03); } }
+@keyframes itl-rip { from { transform: translate3d(calc(var(--a, 2px) * -1), 0, 0); } to { transform: translate3d(var(--a, 2px), 0, 0); } }
+@keyframes itl-drift1 { from { transform: translate3d(-3.5%, 0, 0); } to { transform: translate3d(3.5%, 0, 0); } }
+@keyframes itl-drift2 { from { transform: translate3d(4.5%, 0, 0); } to { transform: translate3d(-4.5%, 0, 0); } }
+@keyframes itl-nightfall { from { opacity: 0; } to { opacity: 0.42; } }
+@keyframes itl-duskfade { from { opacity: 1; } to { opacity: 0.25; } }
+@keyframes itl-tw { 0%, 100% { opacity: 0.05; } 50% { opacity: 1; } }
+@keyframes itl-glow { 0%, 100% { opacity: 0.08; } 50% { opacity: 0.5; } }
+@media (prefers-reduced-motion: reduce) {
+  .itl-hero-bg *, .itl-hero-bg *::before { animation: none !important; transition: none !important; }
+  .itl-kb { transform: scale(1.03); }
+  .itl-night, .itl-dusk, .itl-lt { opacity: 0 !important; }
+  .itl-gl { opacity: 0.5 !important; }
+}
 .itl-hero::before { content: ""; position: absolute; inset: 0; z-index: -2; background: linear-gradient(90deg, rgba(7, 20, 40, 0.92) 0%, rgba(7, 20, 40, 0.74) 38%, rgba(7, 20, 40, 0) 72%); }
 .itl-hero::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 200px; z-index: -1; background: linear-gradient(180deg, rgba(7, 20, 40, 0) 0%, rgba(7, 20, 40, 0.88) 100%); pointer-events: none; }
 .itl-hero-in { padding-top: 112px; padding-bottom: 152px; position: relative; z-index: 2; }
@@ -108,9 +129,9 @@
 @media (max-width: 600px) {
   .itl-hero { align-items: flex-start; }
   .itl-hero::before { background: linear-gradient(180deg, rgba(7, 20, 40, 0.86) 0%, rgba(7, 20, 40, 0.5) 45%, rgba(7, 20, 40, 0) 70%); }
-  .itl-hero-in { padding-top: 104px; padding-bottom: 336px; }
+  .itl-hero-in { padding-top: 104px; padding-bottom: 372px; }
   .itl .itl-assure { display: none; }
-  .itl-hero-bg .itl-skyline { top: auto; bottom: 0; height: auto; aspect-ratio: 600/500; }
+  .itl-stage { --mx: 0.5; --h: 540px; bottom: -36px; }
   .itl-cta { gap: 8px; }
   .itl-cta .itl-btn-primary { width: 100%; justify-content: center; }
   .itl-cta .itl-btn-ghost { background: none; min-height: 44px; padding: 8px 0; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: rgba(255, 255, 255, 0.4); }

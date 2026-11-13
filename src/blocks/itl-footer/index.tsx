@@ -51,8 +51,9 @@ export default defineBlock<Props>({
     credits: [
       { subject: "Family of five", author: "Rohit Dey", authorHref: "https://unsplash.com/@rohit16dey", source: "Unsplash", sourceHref: "https://unsplash.com/photos/apOMdj47q6s" },
       { subject: "Mother and daughter", author: "Vivek Kumar", authorHref: "https://unsplash.com/@vikceo", source: "Unsplash", sourceHref: "https://unsplash.com/photos/a-_1PPjnbUg" },
+      { subject: "Hero painted from a photo", author: "Pang Yuhao", authorHref: "https://unsplash.com/@yuhao", source: "Unsplash", sourceHref: "https://unsplash.com/photos/marina-bay-sands-in-singapore-during-night-time-WCck07a9MbM" },
     ],
-    creditsNote: "The Marina Bay skyline in the hero is drawn in code.",
+    creditsNote: "",
     legal: "This page gives general information and does not replace legal advice. All contact details on this preview are placeholders.",
     fabHref: "#contact",
     fabLabel: "Contact us now",
