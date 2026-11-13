@@ -86,8 +86,8 @@
 /* Painted hero: layered stage, all layers share one 2748 x 1152 plate geometry. Motion = transform/opacity only. */
 .itl-hero-bg { container-type: size; }
 .itl-stage { --r: 2.3854; --m: 0.651; --mx: 0.72; --h: max(100cqh, calc(var(--mx) * 100cqw / (var(--m) * var(--r)))); position: absolute; bottom: 0; height: var(--h); width: calc(var(--h) * var(--r)); left: calc(var(--mx) * 100cqw - var(--m) * var(--h) * var(--r)); }
-.itl-kb { position: absolute; inset: 0; transform-origin: 65% 62%; animation: itl-push 22s cubic-bezier(0.2, 0.6, 0.2, 1) both; will-change: transform; }
-.itl-ly { position: absolute; left: 0; width: 100%; top: 0; height: 70.31%; transform: translate3d(calc(var(--px, 0) * var(--d, 0) * 1px), calc((var(--py, 0) + var(--sy, 0)) * var(--d, 0) * 1px), 0); will-change: transform; }
+.itl-kb { position: absolute; inset: 0; transform-origin: 65% 62%; transform: scale(1.03); }
+.itl-ly { position: absolute; left: 0; width: 100%; top: 0; height: 70.31%; }
 .itl-ly > img, .itl-cl, .itl-cl > img, .itl-lt, .itl-lt > img, .itl-gl, .itl-gl > img, .itl-dusk, .itl-night { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; }
 .itl-ly > img { user-select: none; }
 .itl-ly-water { top: 66.84%; height: 33.16%; }
@@ -100,7 +100,6 @@
 .itl-dusk { background: radial-gradient(ellipse 55% 60% at 65% 100%, rgba(48, 152, 243, 0.42), rgba(29, 79, 138, 0.2) 45%, rgba(29, 79, 138, 0) 75%); animation: itl-duskfade 52s ease-in-out infinite alternate; }
 .itl-night { background: linear-gradient(180deg, #050f20 0%, rgba(11, 31, 58, 0.9) 70%, rgba(11, 31, 58, 0.5) 100%); animation: itl-nightfall 52s ease-in-out infinite alternate; }
 .itl-gl { animation: itl-glow 7s ease-in-out infinite; }
-@keyframes itl-push { from { transform: scale(1.09); } to { transform: scale(1.03); } }
 @keyframes itl-drift1 { from { transform: translate3d(-4.5%, 0, 0); } to { transform: translate3d(4.5%, 0, 0); } }
 @keyframes itl-drift2 { from { transform: translate3d(6%, 0, 0); } to { transform: translate3d(-6%, 0, 0); } }
 @keyframes itl-nightfall { from { opacity: 0; } to { opacity: 0.42; } }
