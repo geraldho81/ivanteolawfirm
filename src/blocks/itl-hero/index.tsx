@@ -76,10 +76,9 @@ const BEAMS: [number, number, number, number, number][] = [
 ];
 /* Sparkle points on bright details (first 12 are the ones kept on mobile). */
 const SPARKS: [number, number][] = [[1512, 383], [1652, 376], [2068, 455], [1511, 576], [1757, 682], [1790, 436], [1988, 442], [2038, 759], [1679, 716], [1523, 681], [1728, 712], [1991, 770], [1654, 777], [1585, 692], [1519, 746], [1897, 779], [1814, 751], [1749, 772], [1654, 422], [1870, 715], [1625, 501], [2097, 728], [1790, 708], [2113, 774], [1561, 397], [1974, 693], [1623, 645], [1697, 538], [2024, 710], [1874, 444]];
-const RIPPLE = [0, 0.06, 0.13, 0.21, 0.3, 0.4, 0.51, 0.62, 0.72, 0.82, 0.91, 1];
 const rnd = (n: number) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
 const GLINTS = Array.from({ length: 16 }, (_, i) => ({
-  x: 1560 + rnd(i + 1) * 760, y: 830 + Math.pow(rnd(i + 40), 1.3) * 250, w: 14 + rnd(i + 80) * 36,
+  x: 1600 + rnd(i + 1) * 700, y: 840 + Math.pow(rnd(i + 40), 1.2) * 230, w: 30 + rnd(i + 80) * 40,
 }));
 
 export default defineBlock<Props>({
@@ -169,25 +168,10 @@ export default defineBlock<Props>({
             <div className="itl-ly itl-ly-full" style={{ ["--d" as string]: 0.6 }}>
               <div className="itl-bloom itl-bloom-back" style={boxStyle(BLOOM)}><Layer src={p.imgBloom} depth={0.6} /></div>
             </div>
-            <div className="itl-ly itl-ly-water" style={{ ["--d" as string]: 0.9 }}>
-              {RIPPLE.slice(0, -1).map((f0, i) => {
-                const f1 = RIPPLE[i + 1];
-                const hh = f1 - f0;
-                return (
-                  <div key={i} className="itl-rs" style={{ top: `${f0 * 100}%`, height: `${hh * 100}%` }}>
-                    <div className="itl-rp" style={{ ["--a" as string]: `${(1.8 + i * 0.85).toFixed(2)}px`, ["--t" as string]: `${(5.2 + (i % 4) * 1.1).toFixed(1)}s`, ["--dl" as string]: `${(-i * 1.7).toFixed(1)}s` }}>
-                      {p.imgWater && (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={sized(p.imgWater, 1400)} srcSet={`${sized(p.imgWater, 1400)} 1400w, ${sized(p.imgWater, 2748)} 2748w`} sizes="(max-width: 600px) 1400px, 2400px" alt="" decoding="async" draggable={false} style={{ top: `${-(f0 / hh) * 100}%`, height: `${(1 / hh) * 100}%` }} />
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+            <div className="itl-ly itl-ly-water" style={{ ["--d" as string]: 0.9 }}><Layer src={p.imgWater} depth={0.9} /></div>
             <div className="itl-ly itl-ly-full" style={{ ["--d" as string]: 0.9 }}>
               {GLINTS.map((g, i) => (
-                <i key={i} className="itl-gn" style={{ left: pct(g.x, PW), top: pct(g.y, PH), width: pct(g.w, PW), ["--t" as string]: `${(1.6 + rnd(i + 7) * 2.4).toFixed(2)}s`, ["--dl" as string]: `${(-rnd(i + 21) * 4).toFixed(2)}s` }} />
+                <i key={i} className="itl-gn" style={{ left: pct(g.x, PW), top: pct(g.y, PH), width: pct(g.w, PW), ["--t" as string]: `${(6.5 + rnd(i + 7) * 3).toFixed(2)}s`, ["--dl" as string]: `${(-rnd(i + 21) * 9).toFixed(2)}s` }} />
               ))}
             </div>
             <div className="itl-ly itl-ly-sky" style={{ ["--d" as string]: 0.7 }}><Layer src={p.imgSkyline} depth={0.7} /></div>
@@ -214,9 +198,6 @@ export default defineBlock<Props>({
                   </div>
                 );
               })}
-            </div>
-            <div className="itl-ly itl-ly-sky itl-sweep" style={{ ["--d" as string]: 0.7, maskImage: `url(${sized(p.imgSkyline, 1400)})`, WebkitMaskImage: `url(${sized(p.imgSkyline, 1400)})` }}>
-              <i className="itl-sw" />
             </div>
             <div className="itl-ly itl-ly-sky" style={{ ["--d" as string]: 0.7 }}><div className="itl-gl"><Layer src={p.imgGlow} depth={0.7} /></div></div>
             <div className="itl-ly itl-ly-full" style={{ ["--d" as string]: 0.7 }}>
